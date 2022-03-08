@@ -59,12 +59,6 @@
     <rights>This work is licensed under a Creative Commons Attribution-Share Alike 3.0 Unported License  http://creativecommons.org/licenses/by-sa/3.0/</rights>
   </info>
 
-<!--_______________________________________________________________________________
-
-    ___________________________ ЛОКАЛИЗАЦИЯ ТЕРМИНОВ ______________________________
-
-    _______________________________________________________________________________ -->
-
   <locale xml:lang="en">
     <terms>
       <term name="et-al"> [et al.]</term>
@@ -102,7 +96,6 @@
         <multiple>ред. и пер.</multiple>
       </term>     
 
-      <!-- SHORT MONTH FORMS -->
       <term name="month-01" form="short">янв.</term>
       <term name="month-02" form="short">февр.</term>
       <term name="month-03" form="short">марта</term>
@@ -120,7 +113,7 @@
 
   <locale>
     <terms>
-      <term name="page-range-delimiter">-</term> <!-- Если между номерами страниц нужно тире, а не дефис [С. 56-59], то эту строку нужно закомментировать -->
+      <term name="page-range-delimiter">-</term>
     </terms>
   </locale>
   
@@ -137,7 +130,7 @@
     </choose>
   </macro>
 
-  <macro name="language-sort"> <!-- Макрос сортировки по полю "Language" (сначала русскоязычные источники, затем иностранные) -->
+  <macro name="language-sort">
     <choose>
       <if variable="language">
         <text value="B000"/>
@@ -148,13 +141,7 @@
     </choose>    
   </macro>
 
-<!--_______________________________________________________________________________
-
-    _____________________________________ АВТОРЫ __________________________________
-
-    _______________________________________________________________________________ -->
-
-  <macro name="author_short"> <!-- Макрос для ненумерованных ссылок вида [Иванов, 2013] -->
+  <macro name="author_short">
     <choose>
       <if type="webpage">
         <names variable="author">
@@ -178,8 +165,6 @@
 
   <macro name="author-title">
     <names variable="author" suffix=". ">
-      <!-- Добавить запятую между фамилией и инициалами автора: sort-separator=",&#160;", иначе sort-separator="&#160;" -->
-      <!-- Сделать шрифт фамилий и инициалов авторов наклонным: font-style="italic", иначе font-style="normal" -->
       <name et-al-min="2" et-al-use-first="1" suppress-min="4" initialize-with="." font-style="normal" name-as-sort-order="first" sort-separator="&#160;"/> 
       <et-al term="and others"/>
     </names>
@@ -217,12 +202,6 @@
       <name et-al-min="4" et-al-use-first="1" delimiter=", " initialize-with="."/>      
     </names>
   </macro>
-
-<!--_______________________________________________________________________________
-
-    _________________________ ВСПОМОГАТЕЛЬНЫЕ МАКРОСЫ _____________________________
-
-    _______________________________________________________________________________ -->
 
   <macro name="citation-number">
     <text variable="citation-number" suffix=".&#9;"/>
@@ -287,7 +266,7 @@
     <text variable="number-of-volumes"/>
   </macro>
 
-  <macro name="collection-number"> <!-- Номер выпуска (Вып. N) -->
+  <macro name="collection-number">
     <choose>
       <if variable="collection-number">
         <label variable="collection-number" form="short" prefix="" suffix="&#160;" text-case="capitalize-first"/>
@@ -295,41 +274,6 @@
       </if>      
     </choose>
   </macro>
-  
-<!--_______________________________________________________________________________
-
-    ______________________________ ССЫЛКИ В ТЕКСТЕ ________________________________
-
-    _______________________________________________________________________________ -->
-
-<!-- Формат цитат для ненумерованных ссылок вида [Иванов, 2013] или [Иванов, 2013, с. 55].
-Сортировка библиографии в этом случае должна быть в алфавитном порядке.
-Для включения этого вида форматирования расскомментировать этот блок, закомментировать следующий (для нумерованных ссылок).-->
-
-<!--
-  <citation et-al-min="4" et-al-use-first="1" disambiguate-add-year-suffix="true" collapse="year" et-al-subsequent-use-first="1" disambiguate-add-names="false" disambiguate-add-givenname="false">
-    <sort>
-      <key macro="language-sort"/>
-      <key macro="author-title"/>
-      <key variable="issued"/>
-    </sort>
-    <layout prefix="[" suffix="]" delimiter="; " page-range-format="">
-      <group delimiter=", ">
-        <text macro="author_short" suffix=""/>
-        <text macro="year-date"/>      
-      </group>
-      <choose>
-        <if variable="locator">
-          <label variable="locator" form="short" prefix=",&#160;" suffix="&#160;"/>
-          <text variable="locator"/>
-        </if>
-      </choose>      
-    </layout>
-  </citation> -->
-
-<!-- Формат цитат для нумерованных ссылок вида [1] или [1, с. 55].
-Для включения этого вида форматирования расскомментировать этот блок, закомментировать предыдущий (для ссылок вида [Автор, год]).-->
-
   <citation et-al-min="4" et-al-use-first="1" collapse="citation-number">
     <sort>
       <key variable="citation-number"/>
@@ -345,19 +289,9 @@
 	</layout>
   </citation>
 
-<!--_______________________________________________________________________________
-
-    ________________________________ БИБЛИОГРАФИЯ _________________________________
-
-    _______________________________________________________________________________ -->
-
   <macro name="bibliography">
     <text macro="citation-number"/>      
     <choose>
-<!--_______________________________________________________________________________
-    _______________ КНИГА (в т.ч. многотомник или отдельный том, а также __________
-    Электронный ресурс локального доступа (CD-ROM, компьютерная программа и др.))__
-    _______________________________________________________________________________ -->
       <if type="book">
         <group delimiter=". – ">
           <group delimiter=" / ">
@@ -382,9 +316,6 @@
           <text variable="medium"/>
         </group>
       </if>
-<!--_______________________________________________________________________________
-    _________________________ ДИССЕРТАЦИЯ или АВТОРЕФЕРАТ _________________________
-    _______________________________________________________________________________ -->
       <else-if type="thesis" match="any">
         <group delimiter=". – " prefix="">
           <group delimiter=" / ">
@@ -398,9 +329,6 @@
           <text macro="number-of-pages"/>
         </group>
       </else-if>
-<!--_______________________________________________________________________________
-    ___________ РАЗДЕЛ КНИГИ, СТАТЬЯ В СБОРНИКЕ, СТАТЬЯ В ЭНЦИКЛОПЕДИИ ____________
-    _______________________________________________________________________________ -->
       <else-if type="chapter paper-conference entry-encyclopedia" match="any">
         <group delimiter=". – ">
           <group delimiter=" // ">
@@ -430,9 +358,6 @@
           <text macro="page"/>
         </group>
       </else-if>
-<!--_______________________________________________________________________________
-    _________________________ СТАТЬЯ В ПЕРИОДИКЕ, ЖУРНАЛЕ _________________________
-    _______________________________________________________________________________ -->
       <else-if type="article-journal article-magazine" match="any">        
         <group delimiter=". – ">
           <group delimiter=" // ">
@@ -452,9 +377,6 @@
           <text macro="page"/>
         </group>
       </else-if>
-<!--_______________________________________________________________________________
-    ______________________________ СТАТЬЯ В ГАЗЕТЕ ________________________________
-    _______________________________________________________________________________ -->
       <else-if type="article-newspaper">        
         <group delimiter=". – ">
           <group delimiter=" // ">
@@ -473,9 +395,6 @@
           <text macro="page"/>
         </group>
       </else-if>
-<!--_______________________________________________________________________________
-    ___________ ЭЛЕКТРОННЫЙ РЕСУРС УДАЛЕННОГО ДОСТУПА (ВЕБ-СТРАНИЦА)_______________
-    _______________________________________________________________________________ -->
       <else-if type="webpage">
         <group delimiter=". – " prefix="">
           <group delimiter=" // ">
@@ -484,7 +403,6 @@
               <text variable="genre"/>
             </group>
             <group delimiter=" ">
-              <!--<text macro="second-position-authors-only"/>-->
               <text variable="note"/>
             </group>            
           </group>            
@@ -502,9 +420,6 @@
     	  </group>
         </group>
       </else-if>
-<!--_______________________________________________________________________________
-    _____________________________ Другие типы источников __________________________
-    _______________________________________________________________________________ -->
       <else>        
         <group delimiter=". – ">
           <group delimiter=" / ">
@@ -531,19 +446,9 @@
     </choose>
   </macro>
 
-<!--_______________________________________________________________________________
-    _________ Непосредтсвенно БИБЛИОГРАФИЯ с сортировкой и локализацией ___________
-    _______________________________________________________________________________ -->
-
   <bibliography et-al-min="4" et-al-use-first="1" page-range-format="" hanging-indent="true" entry-spacing="0">  
     <sort>
       <key variable="citation-number"/>
-      <!-- Строка для сортировки в порядке появления ссылок, а не в алфавитном. Чтобы задействовать, нужно ее раскомментировать, а следующие три закомментировать
-      <key variable="citation-number"/>-->
-      <!--
-      <key macro="language-sort"/>  Сортировка по полю "Language" (сначала русскоязычные источники, затем иностранные) 
-      <key macro="author-title"/>
-      <key variable="issued"/> -->
     </sort>
 
     <layout locale="en" suffix=".">
